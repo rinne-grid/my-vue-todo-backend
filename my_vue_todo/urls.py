@@ -4,5 +4,7 @@ from .views import ref_task_list, create_task
 urlpatterns = [
     path(r'todo_list', ref_task_list),
     path(r'todo_create', create_task),
+    path(r'todo_update', create_task),
+    path(r'todo_delete', create_task),
 ]
 
