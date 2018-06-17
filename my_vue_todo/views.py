@@ -22,7 +22,7 @@ def ref_task_list(request):
 
 
 @csrf_exempt
-def create_task(request, id):
+def create_task(request):
     if request.method == "POST":
         data = JSONParser().parse(request)
 
@@ -42,7 +42,10 @@ def create_task(request, id):
             return JsonResponse(todo_serializer.data, status=201)
         return JsonResponse(todo_serializer.errors, status=400)
 
-    elif request.method == "DELETE":
+
+@csrf_exempt
+def delete_task(request, id):
+    if request.method == "DELETE":
         Todo.objects.filter(id=id)[0].delete()
         return JsonResponse(data={}, status=status.HTTP_204_NO_CONTENT)
 
