@@ -5,6 +5,6 @@ urlpatterns = [
     path(r'todo_list', ref_task_list),
     path(r'todo_create', create_task),
     path(r'todo_update', create_task),
-    path(r'todo_delete', create_task),
+    re_path(r'todo_delete/(?P<id>\d+)', create_task),
 ]
 

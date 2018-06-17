@@ -22,12 +22,9 @@ def ref_task_list(request):
 
 
 @csrf_exempt
-def create_task(request):
+def create_task(request, id):
     if request.method == "POST":
         data = JSONParser().parse(request)
-        print(data)
-        user = User.objects.filter(username=data["user_id"])[0]
-        data["user"] = user.id
 
         todo_serializer = TodoSerializer(data=data)
         if todo_serializer.is_valid():
@@ -37,10 +34,7 @@ def create_task(request):
         return JsonResponse(todo_serializer.errors, status=400)
     elif request.method == "PUT":
         data = JSONParser().parse(request)
-        print(data)
         todo = Todo.objects.filter(id=data["id"])[0]
-        todo.contents = data["contents"]
-        data["user"] = todo.user.id
         todo_serializer = TodoSerializer(todo, data=data)
 
         if todo_serializer.is_valid():
@@ -49,8 +43,7 @@ def create_task(request):
         return JsonResponse(todo_serializer.errors, status=400)
 
     elif request.method == "DELETE":
-        data = JSONParser().parse(request)
-        Todo.objects.filter(id=data["id"])[0].delete()
+        Todo.objects.filter(id=id)[0].delete()
         return JsonResponse(data={}, status=status.HTTP_204_NO_CONTENT)
 
 
