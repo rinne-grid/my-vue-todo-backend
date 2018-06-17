@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 from django.http import JsonResponse
 from rest_framework.renderers import JSONRenderer
@@ -21,17 +22,21 @@ def ref_task_list(request):
 
 @csrf_exempt
 def create_task(request):
+    print("post start")
     if request.method == "POST":
         data = JSONParser().parse(request)
         print(data)
-        user = User.objects.filter(username=data["user_id"])
+        user = User.objects.filter(username=data["user_id"])[0]
         # todo = Todo()
         # todo.contents = data.contents
         # todo.user = user
         data["user"] = user
+        # print(data)
         # data.user = user
         todo_serializer = TodoSerializer(data=data)
         if todo_serializer.is_valid():
-            todo_serializer.save()
-            return JsonResponse(todo_serializer.data, status=201)
-        return JsonResponse(todo_serializer.errors, status=400)
+            print(todo_serializer.data)
+        #     todo_serializer.save()
+        #     return JsonResponse(todo_serializer.data, status=201)
+        # return JsonResponse(todo_serializer.errors, status=400)
+            return HttpResponse("aho")
