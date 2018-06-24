@@ -30,7 +30,7 @@ class TaskViewSet(GenericAPIView):
 @csrf_exempt
 def ref_task_list(request):
     if request.method == "GET":
-        todo_list = Todo.objects.filter(user=request.user)
+        todo_list = Todo.objects.all()
         todo_serializer = TodoSerializer(todo_list, many=True)
         return JsonResponse(todo_serializer.data, safe=False)
 

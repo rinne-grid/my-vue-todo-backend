@@ -6,3 +6,4 @@
 
 * Django REST Framework
 * django-cors-headers
+* djangorestframework-jwt
