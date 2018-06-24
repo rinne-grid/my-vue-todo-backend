@@ -14,10 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-
+from django.urls import path, re_path, include
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('vue-todo/', include('my_vue_todo.urls'))
+    path('vue-todo/', include('my_vue_todo.urls')),
+    re_path(r'^jwt-token', obtain_jwt_token)
 ]

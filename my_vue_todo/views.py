@@ -4,19 +4,33 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
 from django.http import JsonResponse
+
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import status
+
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from .serializers import TodoSerializer
 from .models import Todo
 # Create your views here.
 
 
+class TaskViewSet(GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+        if request.method == "GET":
+            todo_list = Todo.objects.filter(user=request.user)
+            todo_serializer = TodoSerializer(todo_list, many=True)
+            return JsonResponse(todo_serializer.data, safe=False)
+
+
 @csrf_exempt
 def ref_task_list(request):
     if request.method == "GET":
-        todo_list = Todo.objects.all()
+        todo_list = Todo.objects.filter(user=request.user)
         todo_serializer = TodoSerializer(todo_list, many=True)
         return JsonResponse(todo_serializer.data, safe=False)
 
